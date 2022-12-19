@@ -1,1 +1,1 @@
-export { default } from './useHashup';
+export { default as useHashup } from './useHashup';
