@@ -1,3 +1,36 @@
-dist
 node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+npm-debug.log*
+*.tsbuildinfo
+
+# Cache
+.npm
+.cache
+.eslintcache
 .idea/
+.fleet/
+
+# Compiled stuff
+dist
+
+# Coverage
+coverage
+
+# dotenv environment variable files
+.env*
+!.env.example
+
+# Output of 'npm pack'
+*.tgz
+
+# Mac files
+.DS_Store
+
+# Local Netlify folder
+.netlify

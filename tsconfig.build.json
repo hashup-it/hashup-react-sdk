@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+
+  "compilerOptions": {
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true
+  },
+
+  "include": ["./src/**/*"],
+  "exclude": ["./src/**/*.test.ts", "./src/**/*.mdx", "./src/**/*.demo.tsx"]
+}

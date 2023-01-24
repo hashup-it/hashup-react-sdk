@@ -1,23 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "es5",
-      "es2015",
-      "dom"
-    ],
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "jsx": "react",
-    "module": "ESNext",
+    "baseUrl": ".",
     "declaration": true,
-    "declarationDir": "types",
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
-  }
+    "pretty": true,
+    "skipLibCheck": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "lib": ["ESNEXT", "DOM"]
+  },
+
+  "exclude": ["node_modules", "dist", "templates", "website"]
 }
