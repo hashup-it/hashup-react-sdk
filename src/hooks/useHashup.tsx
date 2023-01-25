@@ -16,12 +16,38 @@ import useAsyncEffect from './effects/async';
 import { MAX_PURCHASABLE_COPIES } from '../constants/settings';
 
 interface UseHashupOutput {
-    approve: (isDeprecationMode?: boolean) => Promise<void>;
+    /**
+     * Allows for ahead-of-time payment approval. Called automatically by `buyGame()`.
+     */
+    approve: () => Promise<void>;
+    /**
+     * Purchases a license. Defaults to one token bought, i.e. 100 units.
+     * @param address address of ERC20 licence about to be bought
+     * @param amount amount of token units bought (unit is 0.01 of a token)
+     */
     buyGame: (address: string, amount?: string) => Promise<string | void>;
+    /**
+     * HashUp-protocol lifecycle state. Affected by `buyGame()` method call.
+     * @default BuyStage.NOT_STARTED
+     */
     buyingStage: BuyStage;
+    /**
+     * HashUp-protocol wallet connection init status
+     */
     isEthereumLoading: boolean;
+    /**
+     * HashUp-protocol network compatibility status
+     */
     isNetworkValid: boolean;
+    /**
+     * Sets a custom marketplace. Defaults to HashUp.
+     * @param marketplace marketplace's blockchain address
+     */
     setMarketplace: React.Dispatch<React.SetStateAction<string>>;
+    /**
+     * Sets a reflink variable. Affects `buyGame()` method call.
+     * @param referrer purchase referrer's blockchain address
+     */
     setReferrer: React.Dispatch<React.SetStateAction<string>>;
 }
 
