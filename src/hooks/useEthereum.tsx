@@ -7,56 +7,43 @@ import { Network } from '../enum/network.enum';
 const DESIRED_NETWORKS = [Network.POLYGON_MAINNET];
 
 export const useEthereum = () => {
-    const [isLoading, setLoading] = useState(true);
-    const [walletInstalled, setWalletInstalled] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isWalletInstalled, setIsWalletInstalled] = useState(false);
     const [provider, setProvider] = useState<ethers.providers.Web3Provider | null>(null);
     const [signer, setSigner] = useState<ethers.Signer | null>(null);
     const [account, setAccount] = useState<string | null>(null);
 
-    const [isNetworkValid, setNetworkValid] = useState(false);
-    const [chainId, setChainId] = useState(DESIRED_NETWORKS[0]);
+    const [isNetworkValid, setIsNetworkValid] = useState(false);
+    const [chainId, setChainId] = useState<Network | number>(DESIRED_NETWORKS[0]);
 
-    /** Check if ethereum installed */
-    /** Check if ethereum installed */
-    useEffect(() => {
-        if (typeof window.ethereum !== 'undefined') {
-            setWalletInstalled(true);
-        }
-    }, []);
+    /** Check if ethereum is installed */
+    useEffect(() => setIsWalletInstalled(typeof window.ethereum !== 'undefined'), []);
 
-    /** Check if ethereum installed */
+    /** Check if network is supported */
     useEffect(() => {
         if (chainId === -1) {
             return;
         }
 
-        if (DESIRED_NETWORKS.includes(chainId)) {
-            setNetworkValid(true);
-            console.log('Network connection successful');
-        } else {
-            console.log('Invalid network.');
-        }
-        setLoading(false);
+        const isNetworkValid = DESIRED_NETWORKS.includes(chainId);
+
+        setIsNetworkValid(isNetworkValid);
+        console.log(isNetworkValid ? 'Network connection successful' : 'Invalid network.');
+
+        setIsLoading(false);
     }, [chainId]);
 
-    /** Load provider */
+    /** Network listener */
     useEffect(() => {
-        if (walletInstalled) {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-            provider.on('network', (newNetwork, oldNetwork) => {
-                if (oldNetwork) {
-                    console.log('Network changed. Page will reload now.');
-                    window.location.reload();
-                } else {
-                    console.log('Network ID: ' + newNetwork.chainId);
-                    setChainId(newNetwork.chainId);
-                }
-            });
-
-            setProvider(provider);
+        if (!isWalletInstalled) {
+            return;
         }
-    }, [walletInstalled]);
+
+        const onChainChanged = async (chainIdRaw: string) => {
+            setChainId(parseInt(chainIdRaw, 16));
+        };
+        (window.ethereum as any).on('chainChanged', onChainChanged);
+    }, [isWalletInstalled]);
 
     /** Get signer */
     useEffect(() => {
@@ -72,7 +59,7 @@ export const useEthereum = () => {
 
     return {
         isEthereumLoading: isLoading,
-        walletInstalled,
+        walletInstalled: isWalletInstalled,
         isNetworkValid,
         provider,
         account,

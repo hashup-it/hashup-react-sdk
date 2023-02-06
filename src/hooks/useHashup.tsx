@@ -14,6 +14,8 @@ import {
 import { BuyStage } from '../enum/buy-stage.enum';
 import useAsyncEffect from './effects/async';
 import { MAX_PURCHASABLE_COPIES } from '../constants/settings';
+import { Network } from '../enum/network.enum';
+import { IGame, IGameToken } from '../types';
 
 interface UseHashupOutput {
     /**
@@ -24,8 +26,9 @@ interface UseHashupOutput {
      * Purchases a license. Defaults to one token bought, i.e. 100 units.
      * @param address address of ERC20 licence about to be bought
      * @param amount amount of token units bought (unit is 0.01 of a token)
+     * @param metadata game data; specify to automatically add the token to wallet
      */
-    buyGame: (address: string, amount?: string) => Promise<string | void>;
+    buyGame: (address: string, amount?: string, metadata?: Pick<IGame & IGameToken, 'address' | 'symbol' | 'media'>) => Promise<string | void>;
     /**
      * HashUp-protocol lifecycle state. Affected by `buyGame()` method call.
      * @default BuyStage.NOT_STARTED
@@ -52,22 +55,24 @@ interface UseHashupOutput {
 }
 
 const useHashup = (): UseHashupOutput => {
-    const { isEthereumLoading, isNetworkValid, network, account, walletInstalled, signer } = useEthereum();
+    const { isEthereumLoading, isNetworkValid, network, account, signer } = useEthereum();
 
     const [buyingStage, setBuyingStage] = useState(BuyStage.NOT_STARTED);
     const [referrer, setReferrer] = useState(ethers.constants.AddressZero);
     const [marketplace, setMarketplace] = useState(hashupMarketplace);
 
+    const getTokenAddress = (lookup: {} | any, chainId: Network) => !isNetworkValid ? ethers.constants.AddressZero : lookup[chainId];
+
     const paymentTokenContract = useMemo(
-      () => new ethers.Contract(paymentTokenAddress[network], USDC_ABI, signer!),
+      () => new ethers.Contract(getTokenAddress(paymentTokenAddress, network), USDC_ABI, signer!),
       [signer, network]
     );
     const hashupStoreV0Contract = useMemo(
-      () => new ethers.Contract(hashupStoreV0Address[network], HashupStoreV0_ABI, signer!),
+      () => new ethers.Contract(getTokenAddress(hashupStoreV0Address, network), HashupStoreV0_ABI, signer!),
       [signer, network]
     );
     const hashupStoreV1Contract = useMemo(
-      () => new ethers.Contract(hashupStoreV1Address[network], HashupStoreV1_ABI, signer!),
+      () => new ethers.Contract(getTokenAddress(hashupStoreV1Address, network), HashupStoreV1_ABI, signer!),
       [signer, network]
     );
 
@@ -124,8 +129,9 @@ const useHashup = (): UseHashupOutput => {
      * Token purchase action.
      * @param address license to purchase
      * @param amount amount in 0.01 units
+     * @param metadata game data; specify to automatically add the token to wallet
      */
-    const buyGame = async (address: string, amount: string = '100') => {
+    const buyGame = async (address: string, amount: string = '100', metadata?: Pick<IGame & IGameToken, 'address' | 'symbol' | 'media'>) => {
         const v1price: string = await hashupStoreV1Contract.getLicensePrice(address);
         const v0price = await hashupStoreV0Contract.getCartridgePrice(address);
         const isDeprecationMode = !(Number(v1price) > 0);
@@ -137,11 +143,29 @@ const useHashup = (): UseHashupOutput => {
             setBuyingStage(BuyStage.BUYING);
             await buyTransaction.wait();
             setBuyingStage(BuyStage.BOUGHT);
+
+            /** TODO: factor out for outside use */
+            if (metadata) {
+                await (window as any).ethereum.request({
+                    method: 'wallet_watchAsset',
+                    params: {
+                        type: 'ERC20',
+                        options: {
+                            address: metadata.address,
+                            symbol: metadata.symbol,
+                            decimals: 2,
+                            image: metadata.media.logoUrl
+                        }
+                    }
+                });
+            }
         } catch (error) {
             const _error = error as any;
             if (_error.reason === 'execution reverted: ERC20: transfer amount exceeds balance') {
                 setBuyingStage(BuyStage.APPROVED);
                 return _error.reason;
+            } else {
+                return 'execution aborted: network is invalid';
             }
         }
     };
