@@ -28,27 +28,6 @@ function App() {
  
  return ( <div className="App"> /*Your app code*/ </div> )}  
 ```  
----
-### `buyGame()` function
-accepts two arguments:
-- ERC20 token address of license you want to buy
-- how many licenses you want to buy
-
-```js  
-...
- const { buyGame } = useHashup()
- 
- function handleBuy() {
-   const license = "0x6cbf4648d1f326585f7aa768913991efc0f2b952" // Specify address of license you want to buy
-   const amount = "200" // Specify amount of license you want to buy  
- 
-   buyGame(license, amount)  
- }  
-...
-```  
-
-Clicking on button will now open MetaMask window. If user is not connected it will ask him to connect, then request approve (if needed).  
-After successfull approval it will request license buy transaction. It will take specified amount of USDT from user account and send licenses to his wallet.
 
 ---
 ### `setMarketplace()` function
@@ -67,6 +46,29 @@ accepts a single argument:
 ```  
 
 Sets up your marketplace address.
+
+---
+### `buyGame()` function
+accepts two arguments:
+- ERC20 token address of license you want to buy
+- [how many licenses you want to buy]
+- [game metadata to auto-save the token in user's wallet]
+
+```js  
+...
+ const { buyGame } = useHashup()
+ 
+ function handleBuy() {
+   const license = "0x6cbf4648d1f326585f7aa768913991efc0f2b952" // Specify address of license you want to buy
+   const amount = "200" // Specify amount of license you want to buy  
+ 
+   buyGame(license, amount)  
+ }  
+...
+```  
+
+Clicking on button will now open MetaMask window. If user is not connected it will ask him to connect, then request approve (if needed).  
+After successfull approval it will request license buy transaction. It will take specified amount of USDT from user account and send licenses to his wallet.
 
 ---
 ### `setReferrer()` function

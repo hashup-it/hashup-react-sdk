@@ -6,31 +6,31 @@ export const HashupStoreV1_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'license',
-                type: 'address'
+                type: 'address',
             },
             { indexed: false, internalType: 'address', name: 'marketplace', type: 'address' },
             {
                 indexed: false,
                 internalType: 'uint256',
                 name: 'price',
-                type: 'uint256'
+                type: 'uint256',
             },
             { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
             {
                 indexed: false,
                 internalType: 'address',
                 name: 'referrer',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'Bought',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
         inputs: [{ indexed: false, internalType: 'uint8', name: 'version', type: 'uint8' }],
         name: 'Initialized',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -39,40 +39,40 @@ export const HashupStoreV1_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'creator',
-                type: 'address'
+                type: 'address',
             },
             { indexed: false, internalType: 'address', name: 'license', type: 'address' },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'symbol',
-                type: 'string'
+                type: 'string',
             },
             { indexed: false, internalType: 'string', name: 'name', type: 'string' },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'color',
-                type: 'string'
+                type: 'string',
             },
             { indexed: false, internalType: 'uint256', name: 'price', type: 'uint256' },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'metadata',
-                type: 'string'
+                type: 'string',
             },
             { indexed: false, internalType: 'uint256', name: 'totalSupply', type: 'uint256' },
             {
                 indexed: false,
                 internalType: 'uint256',
                 name: 'transferFee',
-                type: 'uint256'
+                type: 'uint256',
             },
-            { indexed: false, internalType: 'uint256', name: 'marketplaceFee', type: 'uint256' }
+            { indexed: false, internalType: 'uint256', name: 'marketplaceFee', type: 'uint256' },
         ],
         name: 'NewSale',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -81,18 +81,18 @@ export const HashupStoreV1_ABI = [
                 indexed: true,
                 internalType: 'address',
                 name: 'previousOwner',
-                type: 'address'
+                type: 'address',
             },
-            { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' }
+            { indexed: true, internalType: 'address', name: 'newOwner', type: 'address' },
         ],
         name: 'OwnershipTransferred',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
         inputs: [{ indexed: false, internalType: 'address', name: 'account', type: 'address' }],
         name: 'Paused',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -101,18 +101,18 @@ export const HashupStoreV1_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'license',
-                type: 'address'
+                type: 'address',
             },
-            { indexed: false, internalType: 'uint256', name: 'newPrice', type: 'uint256' }
+            { indexed: false, internalType: 'uint256', name: 'newPrice', type: 'uint256' },
         ],
         name: 'PriceChanged',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
         inputs: [{ indexed: false, internalType: 'address', name: 'account', type: 'address' }],
         name: 'Unpaused',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -121,12 +121,12 @@ export const HashupStoreV1_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'license',
-                type: 'address'
+                type: 'address',
             },
-            { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' }
+            { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
         ],
         name: 'Withdrawal',
-        type: 'event'
+        type: 'event',
     },
     {
         inputs: [
@@ -134,19 +134,19 @@ export const HashupStoreV1_ABI = [
             {
                 internalType: 'uint256',
                 name: 'amount',
-                type: 'uint256'
+                type: 'uint256',
             },
             { internalType: 'address', name: 'marketplace', type: 'address' },
             {
                 internalType: 'address',
                 name: 'referrer',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'buyLicense',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
@@ -154,76 +154,76 @@ export const HashupStoreV1_ABI = [
             {
                 internalType: 'uint256',
                 name: 'newPrice',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'changeLicensePrice',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'getHashupFee',
         outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'address', name: 'license', type: 'address' }],
         name: 'getLicenseMarketplaceFee',
         outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'address', name: 'license', type: 'address' }],
         name: 'getLicensePrice',
         outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'getPaymentToken',
         outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'initialize',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'address', name: 'marketplace', type: 'address' }],
         name: 'isWhitelisted',
         outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'owner',
         outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'paused',
         outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'renounceOwnership',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
@@ -231,54 +231,54 @@ export const HashupStoreV1_ABI = [
             {
                 internalType: 'uint256',
                 name: 'price',
-                type: 'uint256'
+                type: 'uint256',
             },
             { internalType: 'uint256', name: 'amount', type: 'uint256' },
             {
                 internalType: 'uint256',
                 name: 'marketplaceFee',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'sendLicenseToStore',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'uint256', name: 'newHashupFee', type: 'uint256' }],
         name: 'setHashupFee',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'address', name: 'newPaymentToken', type: 'address' }],
         name: 'setPaymentToken',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
         name: 'togglePause',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'address', name: 'marketplace', type: 'address' }],
         name: 'toggleWhitelisted',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
         name: 'transferOwnership',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
@@ -286,12 +286,12 @@ export const HashupStoreV1_ABI = [
             {
                 internalType: 'uint256',
                 name: 'amount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'withdrawLicenses',
         outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
         stateMutability: 'nonpayable',
-        type: 'function'
-    }
+        type: 'function',
+    },
 ];

@@ -9,13 +9,15 @@ import {
     hashupMarketplace,
     hashupStoreV0Address,
     hashupStoreV1Address,
-    paymentTokenAddress
+    paymentTokenAddress,
 } from '../constants/addresses';
 import { BuyStage } from '../enum/buy-stage.enum';
 import useAsyncEffect from './effects/async';
 import { MAX_PURCHASABLE_COPIES } from '../constants/settings';
 import { Network } from '../enum/network.enum';
 import { IGame, IGameToken } from '../types';
+import useNetworks from './useNetworks';
+import { HashupError } from '../enum/error.enum';
 
 interface UseHashupOutput {
     /**
@@ -28,7 +30,11 @@ interface UseHashupOutput {
      * @param amount amount of token units bought (unit is 0.01 of a token)
      * @param metadata game data; specify to automatically add the token to wallet
      */
-    buyGame: (address: string, amount?: string, metadata?: Pick<IGame & IGameToken, 'address' | 'symbol' | 'media'>) => Promise<string | void>;
+    buyGame: (
+        address: string,
+        amount?: string,
+        metadata?: Pick<IGame & IGameToken, 'address' | 'symbol' | 'media'>
+    ) => Promise<string | void>;
     /**
      * HashUp-protocol lifecycle state. Affected by `buyGame()` method call.
      * @default BuyStage.NOT_STARTED
@@ -56,6 +62,7 @@ interface UseHashupOutput {
 
 const useHashup = (): UseHashupOutput => {
     const { isEthereumLoading, isNetworkValid, network, account, signer } = useEthereum();
+    const networkManager = useNetworks();
 
     const [buyingStage, setBuyingStage] = useState(BuyStage.NOT_STARTED);
     const [referrer, setReferrer] = useState(ethers.constants.AddressZero);
@@ -64,20 +71,20 @@ const useHashup = (): UseHashupOutput => {
     const getTokenAddress = (lookup: {} | any, chainId: Network) => !isNetworkValid ? ethers.constants.AddressZero : lookup[chainId];
 
     const paymentTokenContract = useMemo(
-      () => new ethers.Contract(getTokenAddress(paymentTokenAddress, network), USDC_ABI, signer!),
-      [signer, network]
+        () => new ethers.Contract(getTokenAddress(paymentTokenAddress, network), USDC_ABI, signer!),
+        [signer, network]
     );
     const hashupStoreV0Contract = useMemo(
-      () => new ethers.Contract(getTokenAddress(hashupStoreV0Address, network), HashupStoreV0_ABI, signer!),
-      [signer, network]
+        () => new ethers.Contract(getTokenAddress(hashupStoreV0Address, network), HashupStoreV0_ABI, signer!),
+        [signer, network]
     );
     const hashupStoreV1Contract = useMemo(
-      () => new ethers.Contract(getTokenAddress(hashupStoreV1Address, network), HashupStoreV1_ABI, signer!),
-      [signer, network]
+        () => new ethers.Contract(getTokenAddress(hashupStoreV1Address, network), HashupStoreV1_ABI, signer!),
+        [signer, network]
     );
 
     const _getStore = (isDeprecationMode: boolean) =>
-      isDeprecationMode ? hashupStoreV0Contract : hashupStoreV1Contract;
+        isDeprecationMode ? hashupStoreV0Contract : hashupStoreV1Contract;
 
     const _getPurchaseTx = async (address: string, price: string, amount: string, isDeprecationMode = false) => {
         /** Approve fallback */
@@ -98,14 +105,12 @@ const useHashup = (): UseHashupOutput => {
 
         /** HashUp V1 */
         console.log('getting new store');
-        console.log('passing in', address,
-          amount.toString(),
-          referrer);
+        console.log('passing in', address, amount.toString(), referrer);
         return await hashupStoreV1Contract['buyLicense(address,uint256,address,address)'](
-          address,
-          amount.toString(),
-          marketplace,
-          referrer
+            address,
+            amount.toString(),
+            marketplace,
+            referrer
         );
     };
 
@@ -117,8 +122,8 @@ const useHashup = (): UseHashupOutput => {
         setBuyingStage(BuyStage.APPROVING);
 
         const approvalTransaction = await paymentTokenContract.approve(
-          _getStore(isDeprecationMode).address,
-          ethers.constants.MaxUint256
+            _getStore(isDeprecationMode).address,
+            ethers.constants.MaxUint256
         );
         await approvalTransaction.wait();
 
@@ -129,15 +134,19 @@ const useHashup = (): UseHashupOutput => {
      * Token purchase action.
      * @param address license to purchase
      * @param amount amount in 0.01 units
-     * @param metadata game data; specify to automatically add the token to wallet
+     * @param metadata game data; specify to automatically save the token in wallet
      */
-    const buyGame = async (address: string, amount: string = '100', metadata?: Pick<IGame & IGameToken, 'address' | 'symbol' | 'media'>) => {
-        const v1price: string = await hashupStoreV1Contract.getLicensePrice(address);
-        const v0price = await hashupStoreV0Contract.getCartridgePrice(address);
-        const isDeprecationMode = !(Number(v1price) > 0);
-        const price = Number(v1price) > 0 ? v1price : v0price;
-
+    const buyGame = async (
+        address: string,
+        amount: string = '100',
+        metadata?: Pick<IGame & IGameToken, 'address' | 'symbol' | 'media'>
+    ) => {
         try {
+            const v1price: string = await hashupStoreV1Contract.getLicensePrice(address);
+            const v0price = await hashupStoreV0Contract.getCartridgePrice(address);
+            const isDeprecationMode = !(Number(v1price) > 0);
+            const price = Number(v1price) > 0 ? v1price : v0price;
+
             const buyTransaction = await _getPurchaseTx(address, price, amount, isDeprecationMode);
 
             setBuyingStage(BuyStage.BUYING);
@@ -154,18 +163,21 @@ const useHashup = (): UseHashupOutput => {
                             address: metadata.address,
                             symbol: metadata.symbol,
                             decimals: 2,
-                            image: metadata.media.logoUrl
-                        }
-                    }
+                            image: metadata.media.logoUrl,
+                        },
+                    },
                 });
             }
         } catch (error) {
             const _error = error as any;
             if (_error.reason === 'execution reverted: ERC20: transfer amount exceeds balance') {
                 setBuyingStage(BuyStage.APPROVED);
-                return _error.reason;
-            } else {
-                return 'execution aborted: network is invalid';
+                return HashupError.BALANCE;
+            } else if (_error.reason === 'user rejected transaction') {
+                return HashupError.DISMISSAL;
+            } /** @dev fired upon internal error, hence general catch */ else {
+                void networkManager.switchNetwork();
+                return HashupError.NETWORK;
             }
         }
     };
@@ -181,7 +193,7 @@ const useHashup = (): UseHashupOutput => {
         setMarketplace,
         approve,
         buyGame,
-        buyingStage
+        buyingStage,
     };
 };
 

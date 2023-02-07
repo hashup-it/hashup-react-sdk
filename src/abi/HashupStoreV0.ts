@@ -4,58 +4,58 @@ export const HashupStoreV0_ABI = [
             {
                 internalType: 'address',
                 name: '_cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 internalType: 'uint256',
                 name: '_amount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'buyCartridge',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: '_cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 internalType: 'uint256',
                 name: '_amount',
-                type: 'uint256'
+                type: 'uint256',
             },
             {
                 internalType: 'address',
                 name: '_referrer',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'buyCartridge',
         outputs: [
             {
                 internalType: 'bool',
                 name: 'success',
-                type: 'bool'
-            }
+                type: 'bool',
+            },
         ],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: 'paymentToken_',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         stateMutability: 'nonpayable',
-        type: 'constructor'
+        type: 'constructor',
     },
     {
         anonymous: false,
@@ -64,23 +64,23 @@ export const HashupStoreV0_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 indexed: false,
                 internalType: 'uint256',
                 name: 'price',
-                type: 'uint256'
+                type: 'uint256',
             },
             {
                 indexed: false,
                 internalType: 'uint256',
                 name: 'amount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'CartridgesBought',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -89,17 +89,17 @@ export const HashupStoreV0_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 indexed: false,
                 internalType: 'uint256',
                 name: 'amount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'CartridgesWithdrawn',
-        type: 'event'
+        type: 'event',
     },
     {
         anonymous: false,
@@ -108,40 +108,40 @@ export const HashupStoreV0_ABI = [
                 indexed: true,
                 internalType: 'address',
                 name: 'previousOwner',
-                type: 'address'
+                type: 'address',
             },
             {
                 indexed: true,
                 internalType: 'address',
                 name: 'newOwner',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'OwnershipTransferred',
-        type: 'event'
+        type: 'event',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: 'cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 internalType: 'uint256',
                 name: 'price',
-                type: 'uint256'
+                type: 'uint256',
             },
             {
                 internalType: 'uint256',
                 name: 'amount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'sendCartridgeToStore',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         anonymous: false,
@@ -150,78 +150,78 @@ export const HashupStoreV0_ABI = [
                 indexed: false,
                 internalType: 'address',
                 name: 'cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'symbol',
-                type: 'string'
+                type: 'string',
             },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'name',
-                type: 'string'
+                type: 'string',
             },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'color',
-                type: 'string'
+                type: 'string',
             },
             {
                 indexed: false,
                 internalType: 'uint256',
                 name: 'price',
-                type: 'uint256'
+                type: 'uint256',
             },
             {
                 indexed: false,
                 internalType: 'string',
                 name: 'media',
-                type: 'string'
-            }
+                type: 'string',
+            },
         ],
         name: 'SentToStore',
-        type: 'event'
+        type: 'event',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: 'newCreator',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'transferCreatorship',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: '_cartridgeAddress',
-                type: 'address'
+                type: 'address',
             },
             {
                 internalType: 'uint256',
                 name: '_amount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'withdrawCartridges',
         outputs: [
             {
                 internalType: 'uint256',
                 name: 'withdrawnAmount',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'nonpayable',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
@@ -230,59 +230,59 @@ export const HashupStoreV0_ABI = [
             {
                 internalType: 'address',
                 name: '',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'uint256',
                 name: '_totalValue',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         name: 'distributePayment',
         outputs: [
             {
                 internalType: 'uint256',
                 name: 'toCreator',
-                type: 'uint256'
+                type: 'uint256',
             },
             {
                 internalType: 'uint256',
                 name: 'toPlatform',
-                type: 'uint256'
+                type: 'uint256',
             },
             {
                 internalType: 'uint256',
                 name: 'toReferrer',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: 'cartridgeAddress',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'getCartridgePrice',
         outputs: [
             {
                 internalType: 'uint256',
                 name: 'price',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
@@ -291,11 +291,11 @@ export const HashupStoreV0_ABI = [
             {
                 internalType: 'address',
                 name: '',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
@@ -304,49 +304,49 @@ export const HashupStoreV0_ABI = [
             {
                 internalType: 'uint256',
                 name: '',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: '',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'raisedAmount',
         outputs: [
             {
                 internalType: 'uint256',
                 name: '',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [
             {
                 internalType: 'address',
                 name: '',
-                type: 'address'
-            }
+                type: 'address',
+            },
         ],
         name: 'reflinkAmount',
         outputs: [
             {
                 internalType: 'uint256',
                 name: '',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
+        type: 'function',
     },
     {
         inputs: [],
@@ -355,10 +355,10 @@ export const HashupStoreV0_ABI = [
             {
                 internalType: 'uint256',
                 name: '',
-                type: 'uint256'
-            }
+                type: 'uint256',
+            },
         ],
         stateMutability: 'view',
-        type: 'function'
-    }
+        type: 'function',
+    },
 ];
