@@ -38,6 +38,10 @@ export const useEthereum = () => {
 
 	/** Network retrieval */
 	useAsyncEffect(async () => {
+		if (!isWalletInstalled) {
+			return
+		}
+
 		if (!isWalletInstalled || !window.ethereum.request) {
 			return;
 		}
@@ -67,6 +71,10 @@ export const useEthereum = () => {
 
 	/** Provider and signer retrieval */
 	useEffect(() => {
+		if (!isWalletInstalled) {
+			return
+		}
+
 		if (account === ethers.constants.AddressZero) {
 			setProvider(null);
 			setSigner(null);
@@ -82,7 +90,13 @@ export const useEthereum = () => {
 	}, [isWalletInstalled, account, chainId]);
 
 	/** Get account */
-	useAsyncEffect(async () => setAccount((await fetchAccounts())[0]), []);
+	useAsyncEffect(async () => {
+		if (!isWalletInstalled) {
+			return
+		}
+
+		setAccount((await fetchAccounts())[0])
+	}, []);
 
 	return {
 		isEthereumLoading: isLoading,

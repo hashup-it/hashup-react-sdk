@@ -1,11 +1,25 @@
-declare type ExternalProvider = import('@ethersproject/providers').ExternalProvider;
+import { ExternalProvider } from '@ethersproject/providers';
+
 declare type AbstractProvider = import('web3/node_modules/web3-core/types').AbstractProvider;
 
 interface EthereumProvider extends ExternalProvider {
-    _state: any;
-    sendAsync: AbstractProvider['sendAsync'];
+	_state: {
+		accounts: string[];
+	};
+	sendAsync: AbstractProvider['sendAsync'];
+
+	on(event: 'close' | 'accountsChanged' | 'chainChanged' | 'networkChanged', callback: (payload: any) => void): void;
+
+	once(
+		event: 'close' | 'accountsChanged' | 'chainChanged' | 'networkChanged',
+		callback: (payload: any) => void
+	): void;
+
+	removeAllListeners(): void;
 }
 
-interface Window {
-    ethereum: EthereumProvider;
+declare global {
+	interface Window {
+		ethereum: EthereumProvider;
+	}
 }

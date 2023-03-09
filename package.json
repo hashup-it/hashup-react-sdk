@@ -1,7 +1,7 @@
 {
   "name": "@hashup-it/hashup-react-sdk",
   "private": false,
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "hashup-it (https://hashup.it)",
   "bugs": {
     "url": "https://github.com/hashup-it/hashup-react-sdk/issues"
@@ -39,6 +39,7 @@
     "@types/jest": "^29.0.3",
     "@types/node": "^18.7.18",
     "@types/react": "17.0.0",
+    "@types/web3": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
     "date-fns": "^2.29.3",

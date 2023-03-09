@@ -155,6 +155,7 @@ const useHashup = (): UseHashupOutput => {
 
             /** TODO: factor out for outside use */
             if (metadata) {
+                // @ts-ignore
                 await (window as any).ethereum.request({
                     method: 'wallet_watchAsset',
                     params: {

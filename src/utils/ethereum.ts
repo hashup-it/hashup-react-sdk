@@ -6,3 +6,5 @@ const ethereumRequestArrayOfResults_ = async (method: string) =>
         : [];
 
 export const fetchAccounts = async () => ethereumRequestArrayOfResults_('eth_requestAccounts');
+
+export const isEthereum = !!window.ethereum
