@@ -96,7 +96,7 @@ export const useEthereum = () => {
 		}
 
 		setAccount((await fetchAccounts())[0])
-	}, []);
+	}, [isWalletInstalled]);
 
 	return {
 		isEthereumLoading: isLoading,
