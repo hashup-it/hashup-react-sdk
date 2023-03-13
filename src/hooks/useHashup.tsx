@@ -18,6 +18,8 @@ import { Network } from '../enum/network.enum';
 import { IGame, IGameToken } from '../types';
 import useNetworks from './useNetworks';
 import { HashupError } from '../enum/error.enum';
+import { HashupCartridge_ABI } from '../abi/HashupCartridge';
+import { add } from 'lodash';
 
 interface UseHashupOutput {
     /**
@@ -105,10 +107,19 @@ const useHashup = (): UseHashupOutput => {
 
         /** HashUp V1 */
         console.log('getting new store');
-        console.log('passing in', address, amount.toString(), referrer);
+
+        const hashupCartridge = new ethers.Contract(address, HashupCartridge_ABI, signer!)
+
+        const fee = await hashupCartridge.creatorFee();
+
+        const amountCorrection = Number(amount) / 100 * Number(fee || 0) / 10
+        const amountCorrected = 100 * Number(amount) / 100 + amountCorrection;
+        const amountTotal = (parseInt(`${amountCorrected + (amountCorrection ? amountCorrected * 0.01 : 0)}`, 10)).toString();
+
+        console.log('passing in', address, amountTotal, referrer);
         return await hashupStoreV1Contract['buyLicense(address,uint256,address,address)'](
             address,
-            amount.toString(),
+            amountTotal,
             marketplace,
             referrer
         );
@@ -134,7 +145,8 @@ const useHashup = (): UseHashupOutput => {
      * Token purchase action.
      * @param address license to purchase
      * @param amount amount in 0.01 units
-     * @param metadata game data; specify to automatically save the token in wallet
+     * @param metadata game data; specify to automatically save the token in wallet; if specified, provides
+     *  further optimizations
      */
     const buyGame = async (
         address: string,
